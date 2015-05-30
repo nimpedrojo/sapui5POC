@@ -60,7 +60,7 @@
 
         var page2 = new sap.m.Page("page2", {
             title: "Pagina de detalles",
-            showNavButton: true,
+            //showNavButton: true,
             navButtonPress: function(){
                 app.back();
             },
@@ -77,9 +77,11 @@
             ]
         });
 
-        var app = new sap.m.App({
-            pages: [page1,page2]
+        var app = new sap.m.SplitApp({
+            masterPages: page1,
+            detailPages:page2
         }).placeAt("content");
+
 
         app.setModel(model);
 
