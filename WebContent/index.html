@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<meta name="robots" content="noindex">
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+
+    <title>Aplicación de prueba para el Betabeers Zaragoza</title>
+
+    <script src="https://sapui5.hana.ondemand.com/resources/sap-ui-core.js"
+            id="sap-ui-bootstrap"
+            data-sap-ui-libs="sap.m,sap.ui.layout"
+            data-sap-ui-xx-bindingSyntax="complex"
+            data-sap-ui-theme="sap_bluecrystal"></script>
+
+
+    <script type="text/javascript">
+
+        var data = {
+            result: [
+                {title: "Peter", streetAddress: "Mueller"},
+                {title: "Petra", streetAddress: "Maier"},
+                {title: "Thomas", streetAddress: "Smith"},
+                {title: "John", streetAddress: "Williams"},
+                {title: "Maria", streetAddress: "Jones"}
+            ]
+        };
+
+        var model = new sap.ui.model.json.JSONModel();
+        model.setData(data);
+
+        var list = new sap.m.List({
+            headerText:"Listado de restaurantes"
+        });
+
+        list.bindItems({
+            path : "/result",
+            sorter : new sap.ui.model.Sorter("title"),
+            template : new sap.m.StandardListItem({
+                title: "{title}",
+                description: "{streetAddress}",
+                type: sap.m.ListType.Navigation,
+                press:function(evt){
+                    var oBindingContext = evt.getSource().getBindingContext();
+                    page2.setBindingContext(oBindingContext);
+                    app.to("page2");
+                }
+            })
+        });
+
+        var page1 = new sap.m.Page({
+            title: "Listado principal",
+            content : list
+        });
+
+        var page2 = new sap.m.Page("page2", {
+            title: "Pagina de detalles",
+            showNavButton: true,
+            navButtonPress: function(){
+                app.back();
+            },
+            content : [
+                new sap.ui.layout.form.SimpleForm({
+                    title: "Detalles de {title} ",
+                    content: [
+                        new sap.m.Label({text: "First Name"}),
+                        new sap.m.Text({text: "{title}"}),
+                        new sap.m.Label({text: "Last Name"}),
+                        new sap.m.Text({text: "{streetAddress}"})
+                    ]
+                })
+            ]
+        });
+
+        var app = new sap.m.App({
+            pages: [page1, page2]
+        }).placeAt("content");
+
+        app.setModel(model);
+
+    </script>
+
+</head>
+<body id="content" class="sapUiBody">
+</body>
+</html>
+  
